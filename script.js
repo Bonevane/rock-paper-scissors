@@ -1,24 +1,37 @@
 let humanScore = 0;
 let computerScore = 0;
+let count = 0;
 
-function playGame(){
+const rock = document.querySelector(".rock");
+const paper = document.querySelector(".paper");
+const scissors = document.querySelector(".scissors");
+const text_1 = document.querySelector(".text_1");
+const text_2 = document.querySelector(".text_2");
 
-    for(let i = 0; i < 5; i++){
-        humanChoice = getHumanChoice();
-        computerChoice = getComputerChoice();
+rock.onclick = ()  => playGame("rock");
+paper.onclick = ()  => playGame("paper");
+scissors.onclick = ()  => playGame("scissors");
 
-        playRound(humanChoice, computerChoice);
+function playGame(humanChoice){
+    playRound(humanChoice, getComputerChoice());
+    
+    text_2.textContent = "Your score: " + humanScore + "  ||  " + "Computer's score: " + computerScore;
+
+
+    if(count >= 5){
+        if(computerScore > humanScore)
+            text_1.textContent = "You lost the game! :(";
+        else if (humanScore > computerScore)
+            text_1.textContent = "You won the game! :)";
+        else
+            text_1.textContent = "The game was a draw!";
+
+        text_2.textContent = "Select any option to start another game";
+
+        count = 0;
+        computerScore = 0;
+        humanScore = 0;
     }
-    
-    console.log("Your score: " + humanScore);
-    console.log("Computer's score: " + computerScore);
-    
-    if(humanScore > computerScore)
-        console.log("You won the game!");
-    else if (humanScore < computerScore)
-        console.log("You lost the game!");
-    else
-        console.log("The game was a draw!");
 }
 
 function playRound(humanChoice, computerChoice){
@@ -27,15 +40,17 @@ function playRound(humanChoice, computerChoice){
         (humanChoice == "rock" && computerChoice == "scissors")
     ){
         humanScore++;
-        console.log("You won! " + humanChoice + " beats " + computerChoice);
+        text_1.textContent = "You won! " + humanChoice + " beats " + computerChoice;
     }
     else if (humanChoice == computerChoice){
-        console.log("It's a draw!");
+        text_1.textContent = "It's a draw!";
     }
     else {
         computerScore++;
-        console.log("You lost! " + computerChoice + " beats " + humanChoice);
+        text_1.textContent = "You lost! " + computerChoice + " beats " + humanChoice;
     }
+
+    count++;
 }
 
 function getComputerChoice(){
@@ -47,10 +62,3 @@ function getComputerChoice(){
     else
         return "scissors";
 }
-
-function getHumanChoice(){
-    let choice = prompt("Enter your choice:");
-    return choice.toLowerCase();
-}
-
-playGame();
